@@ -19,7 +19,7 @@ const FeedCard: React.FC = () => {
         <div className="col-span-11 ml-2">
           <h1 className="text-base font-bold">Vipul</h1>
           <p className="text-sm">
-            Is is just me of everyone thinks that Leo Andres Lional Messi is the real GOAT? Just ended a debate #Messiforlife.
+            Is is just me or everyone thinks that Leo Andres Lionel Messi is the real GOAT? Just ended a debate #Messiforlife.
           </p>
           <div className="flex justify-between mt-5 text-xl items-center w-[90%] ">
             <div>
