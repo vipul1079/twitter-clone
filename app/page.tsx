@@ -1,6 +1,6 @@
 "use client";
 import { BsTwitter, BsPeople, BsPerson } from "react-icons/bs";
-import { BiHomeHeart, BiSearch, BiBookmark } from "react-icons/bi";
+import { BiHomeHeart, BiSearch, BiBookmark, BiImageAlt } from "react-icons/bi";
 import { PiBell } from "react-icons/pi";
 import { MdOutlineEmail, MdOutlineVerified } from "react-icons/md";
 import { RiFileListLine } from "react-icons/ri";
@@ -84,6 +84,13 @@ export default function Home() {
     []
   );
 
+  const handleSelectImage = useCallback(()=>{
+    const input = document.createElement('input');
+    input.setAttribute("type","file");
+    input.setAttribute("accept","image/*")
+    input.click();
+  },[]);
+
   return (
     <div>
       <div className="grid grid-cols-10 w-screen pl-30  h-screen px-32">
@@ -130,6 +137,36 @@ export default function Home() {
         </div>
 
         <div className="col-span-5 ml-2 overflow-auto no-scrollbar  border-r-[1px] border-l-[1px]  border-gray-600">
+          <div>
+            <div className="border border-gray-600 border-l-0 border-r-0 border-b-0 p-4 pr-6 hover:bg-gray-800 cursor-pointer transition-all ">
+              <div className="grid grid-cols-12 gap-3">
+                <div className="col-span-1">
+                  {user?.profileImageURL && (
+                    <Image
+                      className="rounded-full"
+                      src={user.profileImageURL}
+                      height={50}
+                      width={50}
+                      alt="profile Image"
+                    />
+                  )}
+                </div>
+                <div className="col-span-11">
+                  <textarea
+                    placeholder="What's happening?!"
+                    rows={2}
+                    className=" w-full bg-transparent text-lg px-3 border-b border-slate-700 resize-none "
+                  ></textarea>
+                  <div className="mt-2 flex justify-between items-center">
+                    <BiImageAlt onClick={handleSelectImage} className="text-xl " />
+                    <button className="bg-[#6c4de6] text-sm rounded-full px-3 py-1  ">
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <FeedCard />
           <FeedCard />
           <FeedCard />
