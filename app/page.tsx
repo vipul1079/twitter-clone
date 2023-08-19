@@ -7,13 +7,15 @@ import { RiFileListLine } from "react-icons/ri";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { CgMoreO } from "react-icons/cg";
 import FeedCard from "@/Components/FeedCard";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
 import { graphQLClient } from "@/clients/api";
 import { verifyUserGoogleTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import { useCreateTweet, useGetAllTweets } from "@/hooks/tweet";
+import { Tweet } from "@/gql/graphql";
 
 interface TwitterSidebarButton {
   title: String;
@@ -65,6 +67,9 @@ const sidebarMenuItems: TwitterSidebarButton[] = [
 export default function Home() {
   const { user } = useCurrentUser();
 
+  const {tweets=[]} = useGetAllTweets();
+  const {mutate}= useCreateTweet();
+  const [content,setContent]=useState("");
   const queryClient = useQueryClient();
   const handleLoginWithGoogle = useCallback(
     async (cred: CredentialResponse) => {
@@ -90,6 +95,12 @@ export default function Home() {
     input.setAttribute("accept","image/*")
     input.click();
   },[]);
+
+  const handleCreateTweet = useCallback(()=>{
+    mutate({
+      content,
+    });
+  },[content,mutate])
 
   return (
     <div>
@@ -154,12 +165,13 @@ export default function Home() {
                 <div className="col-span-11">
                   <textarea
                     placeholder="What's happening?!"
+                    onChange={e=>setContent(e.target.value)}
                     rows={2}
                     className=" w-full bg-transparent text-lg px-3 border-b border-slate-700 resize-none "
                   ></textarea>
                   <div className="mt-2 flex justify-between items-center">
                     <BiImageAlt onClick={handleSelectImage} className="text-xl " />
-                    <button className="bg-[#6c4de6] text-sm rounded-full px-3 py-1  ">
+                    <button onClick={handleCreateTweet} className="bg-[#6c4de6] text-sm rounded-full px-3 py-1  ">
                       Post
                     </button>
                   </div>
@@ -167,14 +179,9 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
-          <FeedCard />
+          {
+            tweets?.map(tweet=> tweet ? <FeedCard key={tweet?.id} data={tweet as Tweet} />:null)
+          }
         </div>
         <div className="col-span-3 p-5">
           {!user && (
