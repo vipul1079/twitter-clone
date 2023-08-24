@@ -9,15 +9,17 @@ import { Tweet } from "@/gql/graphql";
 
 export default async function Home () {
   try {
-    const { getAllTweets } = await graphQLClient.request(getAllTweetsQuery) ;
+    const  Alltweets  = await graphQLClient.request(getAllTweetsQuery) ;
     
     // Assuming getAllTweets is an array of Tweet objects within the response
-    const tweets = getAllTweets as Tweet[];
+    const prop={
+      tweets:Alltweets.getAllTweets as Tweet[],
+    }
 
     return (
       <div>
         <Twitterlayout>
-          <HomePage tweets={tweets} />
+          <HomePage props={prop} />
         </Twitterlayout>
       </div>
     );

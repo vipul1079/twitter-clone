@@ -20,6 +20,8 @@ const UserProfilePage = async({
 
 
   const user =await getInfo({params});
+
+  
   
   return (
     <div>
