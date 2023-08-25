@@ -15,6 +15,8 @@ import toast from "react-hot-toast";
 export default function HomePage({ props }: any) {
   const { user } = useCurrentUser();
 
+  
+
   const { mutateAsync } = useCreateTweet();
   const [content, setContent] = useState("");
   const [imageURL,setImageURL]=useState("");
